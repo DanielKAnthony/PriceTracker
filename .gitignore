@@ -34,3 +34,4 @@ msbuild.wrn
 # Additional Files
 /appsettings.json
 /appsettings.Development.json
+/amz-tracker/README.md
