@@ -39,7 +39,7 @@ export default class UserAuthForm extends Component{
             return false;
         }
 
-        if (username.length > 32) {
+        if (this.state.username.length > 32) {
             this.setState({ userErr: "Max 32 characters" });
             return false;
         }
@@ -85,18 +85,17 @@ export default class UserAuthForm extends Component{
 
         if(!this.formIsValid()) return;
 
-        const userBody = {
-            "Email": this.state.email,
-            "Username": this.state.username,
-            "Password": this.state.password
-        }
-
         if (this.isLogin) {
             //set cookies
             document.location.replace(window.location.origin + "/");
         } else {
+            const userBody = {
+                "Email": this.state.email,
+                "Username": this.state.username,
+                "Password": this.state.password
+            };
+
             axios.post('/api/user', userBody).then(res => {
-                
                 this.setState({
                     emailErr: res.data.email === null ? "Email taken" : "",
                     userErr: res.data.username === null ? "Username taken" : ""
@@ -124,11 +123,8 @@ export default class UserAuthForm extends Component{
                 onChange={e => this.setState({email:e.target.value})}
                 error={this.state.emailErr !== ""}
                 helperText={this.state.emailErr}
-                
-                        />
-            
+                />
             <br />
-
             
             {!this.isLogin &&
             <div>
@@ -139,10 +135,9 @@ export default class UserAuthForm extends Component{
                 onChange={e => this.setState({username:e.target.value})}
                 error={this.state.userErr !== ""}
                 helperText={this.state.userErr}
-                
                 />
                 <br/>
-                </div>
+            </div>
             }
 
             <TextField 
@@ -152,8 +147,7 @@ export default class UserAuthForm extends Component{
                 type="password"
                 onChange={e => this.setState({password:e.target.value})}
                 error={this.state.passErr !== ""}
-                helperText={this.state.passErr}
-                
+                helperText={this.state.passErr} 
             />
             <br/>
             <button type="submit" onClick={e => this.handleSubmit(e)}>Submit</button>
