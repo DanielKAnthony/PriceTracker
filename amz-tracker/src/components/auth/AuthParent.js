@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import LoginForm from './LoginForm';
-import RegForm from './RegForm';
+import UserAuthForm from './UserAuthForm';
 
 export default class AuthParent extends Component{
     constructor(props){
@@ -12,10 +11,7 @@ export default class AuthParent extends Component{
     render() {
         return (
             <div>
-            {window.location.pathname === "/login" ? 
-                <LoginForm/>:<RegForm/>
-            
-            }
+            <UserAuthForm/>
             </div>
         )
     }

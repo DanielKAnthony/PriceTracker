@@ -25,6 +25,22 @@ namespace AmazonTrackerApp.Controllers
     		return await _context.Users.ToListAsync();
     	}
 
+        [HttpGet("logauth")]
+        public bool AuthUser([FromQuery] string namefield,[FromQuery] string pass)
+        {
+
+            var tmpUser =  _context.Users.SingleOrDefault(user => 
+            (namefield.Contains('@') ? user.Email:user.Username) == namefield);
+
+
+            if(tmpUser == null)
+            {
+                return false;
+            }
+
+            return tmpUser.Password == pass;
+        }
+
     	[HttpGet("{Id}")]
     	public async Task<ActionResult<User>> GetUser(int id)
     	{
@@ -64,9 +80,31 @@ namespace AmazonTrackerApp.Controllers
     	}
 
     	[HttpPost]
-    	public async Task<ActionResult<User>> PostUser(User user)
+    	public async Task<ActionResult<User>> PostUser([FromBody] User user)
     	{
-    		_context.Users.Add(user);
+            User errUser = new User
+            {
+                Email = "temp",
+                Username = "temp",
+                Password = null
+            };
+
+            bool duplicate = false;
+
+            if (EmailExists(user.Email))
+            {
+                errUser.Email = null;
+                duplicate = true;
+            }
+            if (UsernameExists(user.Username))
+            {
+                errUser.Username = null;
+                duplicate = true;
+            }
+
+            if (duplicate) return errUser;
+
+            _context.Users.Add(user);
     		await _context.SaveChangesAsync();
 
     		return CreatedAtAction("GetUser", new { id = user.Id}, user);
@@ -76,6 +114,8 @@ namespace AmazonTrackerApp.Controllers
     	public async Task<ActionResult<User>> DeleteUser(int id)
     	{
     		var user = await _context.Users.FindAsync(id);
+
+
 
     		if(user == null)
     		{
@@ -92,5 +132,15 @@ namespace AmazonTrackerApp.Controllers
     	{
     		return _context.Users.Any(e => e.Id == id);
     	}
+
+        private bool EmailExists(string Email)
+        {
+            return _context.Users.Any(e => e.Email == Email);
+        }
+
+        private bool UsernameExists(string Username)
+        {
+            return _context.Users.Any(e => e.Username == Username);
+        }
     }
 }
