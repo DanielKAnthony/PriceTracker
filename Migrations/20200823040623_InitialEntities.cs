@@ -14,8 +14,7 @@ namespace AmazonTrackerApp.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Username = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    Password = table.Column<string>(nullable: true)
+                    Email = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -37,6 +36,26 @@ namespace AmazonTrackerApp.Migrations
                     table.PrimaryKey("PK_TrackLists", x => x.Id);
                     table.ForeignKey(
                         name: "FK_TrackLists_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserAuths",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Password = table.Column<string>(nullable: true),
+                    UserId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserAuths", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserAuths_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -73,12 +92,20 @@ namespace AmazonTrackerApp.Migrations
                 name: "IX_TrackLists_UserId",
                 table: "TrackLists",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserAuths_UserId",
+                table: "UserAuths",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "ListTrends");
+
+            migrationBuilder.DropTable(
+                name: "UserAuths");
 
             migrationBuilder.DropTable(
                 name: "TrackLists");

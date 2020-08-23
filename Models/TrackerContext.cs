@@ -14,6 +14,7 @@ namespace AmazonTrackingApp.Models
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<UserAuth> UserAuths { get; set; }
         public DbSet<AzTrackList> TrackLists { get; set; }
         public DbSet<PriceRecord> ListTrends { get; set; }
     }

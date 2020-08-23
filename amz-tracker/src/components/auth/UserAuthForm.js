@@ -55,24 +55,29 @@ export default class UserAuthForm extends Component{
     validLogForm = () => {
         this.setState({
             emailErr: this.state.email === "" ? "Required": "",
-            passErr: this.state.passErr === "" ? "Required": ""
+            passErr: this.state.password === "" ? "Required": ""
         });
 
         if(this.state.email.length === 0 || this.state.password === 0)
             return false;
-        
+
+        var failed = false;
         axios.get('api/user/logauth', {
             params: {
                 namefield: this.state.email,
                 pass: this.state.password
             }
+        }).catch(error => {
+            console.log("ERROR HERE: " + error);
+            this.setState({ emailErr: "Invalid name or password" });
+            failed = true;
         }).then(res => {
-            if (!res.data) {
-                this.setState({ emailErr: "Incorrect name or password" });
-            }
-            return res.data;
-        })
-        
+            if (failed) return false;
+            Cookies.set("username", res.data.username, { sameSite: 'strict' });
+            Cookies.set("email", res.data.email, { sameSite: 'strict' });
+            document.location.replace(window.location.origin + "/");
+            return true;
+        });
     }
 
     formIsValid = () => {
@@ -85,17 +90,13 @@ export default class UserAuthForm extends Component{
 
         if(!this.formIsValid()) return;
 
-        if (this.isLogin) {
-            //set cookies
-            document.location.replace(window.location.origin + "/");
-        } else {
-            const userBody = {
+        if (!this.isLogin) {
+            const userData = {
                 "Email": this.state.email,
                 "Username": this.state.username,
                 "Password": this.state.password
-            };
-
-            axios.post('/api/user', userBody).then(res => {
+            }
+            axios.post('/api/user', userData).then(res => {
                 this.setState({
                     emailErr: res.data.email === null ? "Email taken" : "",
                     userErr: res.data.username === null ? "Username taken" : ""
@@ -104,9 +105,9 @@ export default class UserAuthForm extends Component{
                 if (res.data.email === null || res.data.username === null)
                     return;
 
-                //Cookies.set("username", this.state.username, { sameSite: 'strict' });
-                //Cookies.set("email", this.state.email, { sameSite: 'strict' });
-                //document.location.replace(window.location.origin + "/");console
+                Cookies.set("username", this.state.username, { sameSite: 'strict' });
+                Cookies.set("email", this.state.email, { sameSite: 'strict' });
+                document.location.replace(window.location.origin + "/");
             })
         }
     }

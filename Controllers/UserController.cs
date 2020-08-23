@@ -26,19 +26,22 @@ namespace AmazonTrackerApp.Controllers
     	}
 
         [HttpGet("logauth")]
-        public bool AuthUser([FromQuery] string namefield,[FromQuery] string pass)
+        public async Task<ActionResult<User>> AuthUser([FromQuery] string namefield,[FromQuery] string pass)
         {
 
             var tmpUser =  _context.Users.SingleOrDefault(user => 
             (namefield.Contains('@') ? user.Email:user.Username) == namefield);
 
-
             if(tmpUser == null)
             {
-                return false;
+                return NotFound();
             }
 
-            return tmpUser.Password == pass;
+			var userId = tmpUser.Id;
+            var userPass = await _context.UserAuths.Where(x => x.UserId == userId).ToListAsync();
+
+            if (pass == userPass[0].Password) return tmpUser;
+            return NotFound();
         }
 
     	[HttpGet("{Id}")]
@@ -80,13 +83,12 @@ namespace AmazonTrackerApp.Controllers
     	}
 
     	[HttpPost]
-    	public async Task<ActionResult<User>> PostUser([FromBody] User user)
+    	public async Task<ActionResult<User>> PostUser([FromBody] UserRequestBody user)
     	{
             User errUser = new User
             {
                 Email = "temp",
                 Username = "temp",
-                Password = null
             };
 
             bool duplicate = false;
@@ -104,18 +106,41 @@ namespace AmazonTrackerApp.Controllers
 
             if (duplicate) return errUser;
 
-            _context.Users.Add(user);
-    		await _context.SaveChangesAsync();
+            User postUser = new User{
+                Username = user.Username,
+                Email = user.Email,
+            };
 
-    		return CreatedAtAction("GetUser", new { id = user.Id}, user);
+            _context.Users.Add(postUser);
+            
+			await _context.SaveChangesAsync();
+
+            await InitUserAuth(user.Password, user.Email);
+
+    		return CreatedAtAction("GetUser", new { id = postUser.Id}, user);
     	}
+
+        private async Task<ActionResult<UserAuth>> InitUserAuth(string pass,string email)
+        {
+            var newUser = await _context.Users.Where(e => e.Email == email).ToListAsync();
+
+            UserAuth tmp = new UserAuth
+            {
+                Password = pass,
+                UserId = newUser[0].Id
+            };
+
+            _context.UserAuths.Add(tmp);
+
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
 
     	[HttpDelete("{Id}")]
     	public async Task<ActionResult<User>> DeleteUser(int id)
     	{
     		var user = await _context.Users.FindAsync(id);
-
-
 
     		if(user == null)
     		{

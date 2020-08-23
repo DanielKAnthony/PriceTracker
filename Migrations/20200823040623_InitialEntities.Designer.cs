@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AmazonTrackerApp.Migrations
 {
     [DbContext(typeof(TrackerContext))]
-    [Migration("20200820035525_InitialEntities")]
+    [Migration("20200823040623_InitialEntities")]
     partial class InitialEntities
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -76,15 +76,32 @@ namespace AmazonTrackerApp.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("text");
 
-                    b.Property<string>("Password")
-                        .HasColumnType("text");
-
                     b.Property<string>("Username")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("AmazonTrackingApp.Models.UserAuth", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Password")
+                        .HasColumnType("text");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserAuths");
                 });
 
             modelBuilder.Entity("AmazonTrackingApp.Models.AzTrackList", b =>
@@ -101,6 +118,15 @@ namespace AmazonTrackerApp.Migrations
                     b.HasOne("AmazonTrackingApp.Models.AzTrackList", "AzTrackList")
                         .WithMany("PriceTrend")
                         .HasForeignKey("AzTrackListId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("AmazonTrackingApp.Models.UserAuth", b =>
+                {
+                    b.HasOne("AmazonTrackingApp.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
