@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import UserAuthForm from './UserAuthForm';
+import FeatureText from './FeatureText';
+import './styling/ParentStyle.css';
 
 export default class AuthParent extends Component{
     constructor(props){
@@ -10,8 +12,13 @@ export default class AuthParent extends Component{
 
     render() {
         return (
-            <div>
+            <div className="AuthContainer">
+            <div >
             <UserAuthForm/>
+            </div>
+            <div className="AuthSub" id="authRight">
+                <FeatureText/>
+            </div>
             </div>
         )
     }

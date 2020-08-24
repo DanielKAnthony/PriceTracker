@@ -1,0 +1,58 @@
+.AuthContainer{
+    display: flex;
+    flex-direction: column;
+    background: url('./stockBg.jpg') no-repeat center center fixed;
+    text-align: center;
+    justify-content: center;
+    min-width: 100%;
+    min-height: 100%;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+#authRight{
+    background-color: white;
+    box-shadow: 2px 3px 15px rgb(114, 114, 114);
+    clip-path: inset(-1px -20px -20px 0px);
+    width:80vw;
+}
+
+@media (min-aspect-ratio:1/1) and (min-height:600px){
+    #authRight{
+        height: 55vh;
+        width: 30vw;
+        top: 20%;
+        transform: translateY(20%);
+        -ms-transform: translateY(20%);
+        -moz-transform: translateY(20%);
+        -webkit-transform: translateY(20%);
+        -o-transform: translateY(20%);
+        border-radius: 0 2% 2% 0;
+    }
+
+    .AuthContainer{
+        flex-direction: row;
+        position: fixed;
+    }
+}
+
+@media (max-aspect-ratio:99/100), (max-height:599px){
+    #authRight{
+        margin: auto;
+        margin-top:0;
+    }
+    .AuthContainer{
+        min-height:100vh;
+        padding-bottom: 5vh;
+    }
+    @media(orientation: landscape){
+        /* #authRight{
+            margin-bottom:5vw;
+        } */
+        .AuthContainer{
+            height:100vw;
+        }
+    }
+}

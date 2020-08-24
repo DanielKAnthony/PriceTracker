@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Cookies from 'js-cookie';
 import axios from 'axios';
+import './styling/UserAuthStyle.css';
 
 export default class UserAuthForm extends Component{
     constructor(props){
@@ -115,9 +116,10 @@ export default class UserAuthForm extends Component{
     render() {
         return(
             <div className="RegParent">
-                <form type="submit" onSubmit={this.handleSubmit}>
-            
+                <form type="submit" className="AuthForm" onSubmit={this.handleSubmit}>
+                <h2 style={{marginBottom:"3vh"}}>{this.isLogin ? "Sign In":"Register"}</h2>
             <TextField 
+            style={{marginBottom:"2%"}}
                 name="email"
                 placeholder={this.isLogin ? "Email or username":"Email"}
                 variant="outlined" 
@@ -130,6 +132,7 @@ export default class UserAuthForm extends Component{
             {!this.isLogin &&
             <div>
                 <TextField 
+                style={{marginBottom:"2%"}}
                 name="username"
                 placeholder="Username"
                 variant="outlined" 
@@ -141,7 +144,8 @@ export default class UserAuthForm extends Component{
             </div>
             }
 
-            <TextField 
+            <TextField
+                style={{marginBottom:"2%"}}
                 name="password"
                 placeholder="Password"
                 variant="outlined"
@@ -151,7 +155,9 @@ export default class UserAuthForm extends Component{
                 helperText={this.state.passErr} 
             />
             <br/>
-            <button type="submit" onClick={e => this.handleSubmit(e)}>Submit</button>
+            <button type="submit" id="authBtn" onClick={e => this.handleSubmit(e)}>Submit</button>
+            {this.isLogin && <p onClick={() => window.location.href="/register"}
+            style={{marginTop:"5vh", color:"blue",cursor:"pointer",fontWeight:"bold"}}>Register here</p>}
             </form>
             </div>
         )

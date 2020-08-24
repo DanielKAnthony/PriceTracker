@@ -1,0 +1,50 @@
+.RegParent{
+    background-color: rgba(255, 255, 255, 0.75);
+    background: linear-gradient(258deg, rgba(189, 189, 189, 0.75) 0%, rgba(219, 219, 219, 0.75) 50%, rgba(255, 255, 255, 0.75) 100%);
+    box-shadow: -2px 3px 15px rgb(114, 114, 114);
+    clip-path: inset(-1px 0px -20px -20px);
+    width:80vw;
+}
+
+@media (min-aspect-ratio:1/1) and (min-height:600px){
+    .RegParent{
+        height: 55vh;
+        width: 30vw;
+        top: 20%;
+        transform: translateY(20%);
+        -ms-transform: translateY(20%);
+        -moz-transform: translateY(20%);
+        -webkit-transform: translateY(20%);
+        -o-transform: translateY(20%);
+        border-radius: 2% 0 0 2%;
+    }
+}
+#authBtn{
+    width:35%;
+    height: 4vh;
+    font-size: 1.05rem;
+    border-radius: 2%;
+    border: 1px solid rgb(155, 155, 155);
+    color: blue;
+    font:Tahoma, Geneva, sans-serif;
+}
+
+@media (max-aspect-ratio:99/100), (max-height:599px){
+    .RegParent{
+        margin: auto;
+        margin-top: 10vh;
+        padding-bottom:3vh;
+    }
+    @media(orientation: landscape){
+        .RegParent{margin-top:10vw;}
+    }
+    #authBtn{
+        height: auto;
+        padding-top: 1%;
+        padding-bottom: 1%;
+    }
+}
+
+.AuthForm{
+    padding-top: 7vh;
+}

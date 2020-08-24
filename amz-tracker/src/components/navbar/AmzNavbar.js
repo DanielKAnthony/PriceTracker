@@ -113,7 +113,8 @@ const AmzNavbar = () => {
     <div className={classes.grow}>
       <AppBar position="static">
         <Toolbar>
-          <Typography className="NavTitle" variant="h5" noWrap>
+          <Typography onClick={() => window.location.href="/"}
+          className="NavTitle" variant="h5" noWrap style={{cursor:"pointer"}}>
             Amazon Tracker
           </Typography>
           <div className={classes.grow} />
