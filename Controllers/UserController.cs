@@ -58,7 +58,7 @@ namespace AmazonTrackerApp.Controllers
     	}
 
     	[HttpPut("{Id}")]
-    	public async Task<IActionResult> PustUser(int id, User user)
+    	public async Task<IActionResult> PutUser(int id, User user)
     	{
     		user.Id = id;
 
