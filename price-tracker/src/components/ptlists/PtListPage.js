@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-export default class AmazonListPage extends Component{
+export default class PtListPage extends Component{
     constructor(props){
         super(props);
 

@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AmzNavbar = () => {
+const PtNavbar = () => {
   const isLoggedIn = new App().isLoggedIn();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -89,7 +89,7 @@ const AmzNavbar = () => {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem onClick={() => window.location.href="/amazon-lists"}>
+      <MenuItem onClick={() => window.location.href="/pt-lists"}>
         My Items
       </MenuItem>
       <MenuItem onClick={() => window.location.href="/analytics"}>
@@ -115,7 +115,7 @@ const AmzNavbar = () => {
         <Toolbar>
           <Typography onClick={() => window.location.href="/"}
           className="NavTitle" variant="h5" noWrap style={{cursor:"pointer"}}>
-            Amazon Tracker
+            Price Tracker
           </Typography>
           <div className={classes.grow} />
           
@@ -123,7 +123,7 @@ const AmzNavbar = () => {
             {isLoggedIn ? 
             <div style={{ display: "flex", flexDirection: "row" }}>
                 <div>
-                <h4 onClick={() => window.location.href="/amazon-lists"}
+                <h4 onClick={() => window.location.href="/pt-lists"}
                     style={{marginRight:"2vw",cursor:"pointer"}}
                 >My Items</h4>
                 </div>
@@ -175,4 +175,4 @@ const AmzNavbar = () => {
   );
 }
 
-export default AmzNavbar;
+export default PtNavbar;

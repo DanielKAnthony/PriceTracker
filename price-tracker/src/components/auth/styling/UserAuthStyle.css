@@ -23,8 +23,8 @@
     width:35%;
     height: 4vh;
     font-size: 1.05rem;
-    border-radius: 2%;
-    border: 1px solid rgb(155, 155, 155);
+    border-radius: 5%;
+    border: 1px solid rgb(184, 184, 184);
     color: blue;
     font:Tahoma, Geneva, sans-serif;
 }
@@ -34,6 +34,7 @@
         margin: auto;
         margin-top: 10vh;
         padding-bottom:3vh;
+        border-radius: 2% 2% 0 0;
     }
     @media(orientation: landscape){
         .RegParent{margin-top:10vw;}

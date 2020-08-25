@@ -157,7 +157,8 @@ export default class UserAuthForm extends Component{
             <br/>
             <button type="submit" id="authBtn" onClick={e => this.handleSubmit(e)}>Submit</button>
             {this.isLogin && <p onClick={() => window.location.href="/register"}
-            style={{marginTop:"5vh", color:"blue",cursor:"pointer",fontWeight:"bold"}}>Register here</p>}
+            style={{color:"blue",cursor:"pointer",fontWeight:"bold",
+            width:"fit-content",margin:"auto",marginTop:"5vh"}}>Register here</p>}
             </form>
             </div>
         )

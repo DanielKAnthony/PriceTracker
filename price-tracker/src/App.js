@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Route, BrowserRouter as Router, Switch, Redirect } from 'react-router-dom';
 import Homepage from './components/homepage/HomeParent';
 import AuthParent from './components/auth/AuthParent';
-import AmzNavbar from './components/navbar/AmzNavbar';
-import AmazonListPage from './components/amazonlists/AmazonListPage';
+import PtNavbar from './components/navbar/PtNavbar';
+import PtListPage from './components/ptlists/PtListPage';
 import Cookies from 'js-cookie';
 
 export default class App extends Component{
@@ -21,15 +21,15 @@ export default class App extends Component{
   render() {
     return(
       <Router forceRefresh={true}>
-        <AmzNavbar/>
+        <PtNavbar/>
         <Switch>
           <Route exact path='/' component={Homepage}/>
           <Route exact path='/(register|login)' component={AuthParent}/>
           {/* {this.isLoggedIn() ?
-          <Route exact path='/amazon-lists' component={AmazonListPage} />:
+          <Route exact path='/amazon-lists' component={PtListPage} />:
           <Redirect to='/login' component={AuthParent}/>
           } */}
-          <Route exact path='/amazon-lists' component={AmazonListPage} />
+          <Route exact path='/amazon-lists' component={PtListPage} />
 
         </Switch>
 

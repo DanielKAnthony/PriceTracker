@@ -12,9 +12,9 @@ export default class FeatureText extends Component{
             <div style={{paddingBottom:"3vh"}}>
                 <h2 style={{paddingTop:"7vh"}}>Features</h2>
                 <ul style={{textAlign:"left",listStyleType:"none"}}>
-                    <li style={{marginBottom:"3vh"}}>Track unlimited Amazon prices at any time</li>
+                    <li style={{marginBottom:"3vh"}}>Track unlimited listings at any time</li>
                     <li style={{marginBottom:"3vh"}}>See price trends for items you track</li>
-                    <li style={{marginBottom:"3vh"}}>Know when an item is out of stock</li>
+                    <li style={{marginBottom:"3vh"}}>Know when an item is unavailable</li>
                     <li>Receive an email when the price is right</li>
                 </ul>
             </div>
