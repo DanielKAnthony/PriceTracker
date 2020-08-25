@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AmazonTrackingApp.Models
+namespace PriceTrackerApp.Models
 {
     public class PriceRecord
     {
         public int Id { get; set; }
         public int DaysAgo { get; set; }
         public float Price { get; set; }
-        public int AzTrackListId { get; set; }
-        public AzTrackList AzTrackList { get; set; }
+        public int TrackListId { get; set; }
+        public TrackList TrackList { get; set; }
     }
 }

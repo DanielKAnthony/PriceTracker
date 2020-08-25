@@ -7,9 +7,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using AmazonTrackingApp.Models;
+using PriceTrackerApp.Models;
 
-namespace AmazonTrackerApp
+namespace PriceTrackerApp
 {
     public class Startup
     {

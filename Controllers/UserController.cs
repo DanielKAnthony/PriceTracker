@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using AmazonTrackingApp.Models;
+using PriceTrackerApp.Models;
 
-namespace AmazonTrackerApp.Controllers
+namespace PriceTrackerApp.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]

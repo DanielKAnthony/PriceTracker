@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-namespace AmazonTrackingApp.Models
+namespace PriceTrackerApp.Models
 {
     public class TrackerContext : DbContext
     {
@@ -15,7 +15,7 @@ namespace AmazonTrackingApp.Models
 
         public DbSet<User> Users { get; set; }
         public DbSet<UserAuth> UserAuths { get; set; }
-        public DbSet<AzTrackList> TrackLists { get; set; }
+        public DbSet<TrackList> TrackLists { get; set; }
         public DbSet<PriceRecord> ListTrends { get; set; }
     }
 }

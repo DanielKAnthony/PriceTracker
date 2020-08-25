@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace AmazonTrackerApp.Migrations
+namespace PriceTrackerApp.Migrations
 {
     public partial class InitialEntities : Migration
     {
@@ -70,23 +70,23 @@ namespace AmazonTrackerApp.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     DaysAgo = table.Column<int>(nullable: false),
                     Price = table.Column<float>(nullable: false),
-                    AzTrackListId = table.Column<int>(nullable: false)
+                    TrackListId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ListTrends", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ListTrends_TrackLists_AzTrackListId",
-                        column: x => x.AzTrackListId,
+                        name: "FK_ListTrends_TrackLists_TrackListId",
+                        column: x => x.TrackListId,
                         principalTable: "TrackLists",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ListTrends_AzTrackListId",
+                name: "IX_ListTrends_TrackListId",
                 table: "ListTrends",
-                column: "AzTrackListId");
+                column: "TrackListId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TrackLists_UserId",

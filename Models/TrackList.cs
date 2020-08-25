@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AmazonTrackingApp.Models
+namespace PriceTrackerApp.Models
 {
-    public class AzTrackList
+    public class TrackList
     {
         public int Id { get; set; }
         public string PageUrl { get; set; }

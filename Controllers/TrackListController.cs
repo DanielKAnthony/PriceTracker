@@ -4,29 +4,29 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using AmazonTrackingApp.Models;
+using PriceTrackerApp.Models;
 
-namespace AmazonTrackerApp.Controllers
+namespace PriceTrackerApp.Controllers
 {
     [Route("lists/[controller]")]
     [ApiController]
-    public class AzTrackListController:ControllerBase
+    public class TrackListController:ControllerBase
     {
         private readonly TrackerContext _context;
 
-        public AzTrackListController(TrackerContext context)
+        public TrackListController(TrackerContext context)
         {
             _context = context;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AzTrackList>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<TrackList>>> GetUsers()
         {
             return await _context.TrackLists.ToListAsync();
         }
 
         [HttpGet("{UserId}")]
-        public async Task<ActionResult<IEnumerable<AzTrackList>>> GetUser(int uid)
+        public async Task<ActionResult<IEnumerable<TrackList>>> GetUser(int uid)
         {
             var userLists = await _context.TrackLists.Where(e => e.UserId == uid).ToListAsync();
 
@@ -39,7 +39,7 @@ namespace AmazonTrackerApp.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> PostList([FromBody] AzTrackList azList)
+        public async Task<ActionResult<User>> PostList([FromBody] TrackList azList)
         {
             //check for duplicate page here
             var uLists = await _context.TrackLists.Where(e => e.UserId == azList.UserId).ToListAsync();
@@ -53,7 +53,7 @@ namespace AmazonTrackerApp.Controllers
                     return null;
                 }
             }
-            //get user here and init ATL object -- change params to FromQuery
+            //get user here and init TL object -- change params to FromQuery
             _context.TrackLists.Add(azList);
 
             await _context.SaveChangesAsync();
@@ -62,7 +62,7 @@ namespace AmazonTrackerApp.Controllers
         }
 
         [HttpPut("{Id}")]
-        public async Task<IActionResult> PutList(int id, AzTrackList azTrack)
+        public async Task<IActionResult> PutList(int id, TrackList azTrack)
         {
             azTrack.Id = id;
 
@@ -86,7 +86,7 @@ namespace AmazonTrackerApp.Controllers
         }
 
         [HttpDelete]
-        public async Task<ActionResult<AzTrackList>> DeleteList(int uid,string pageUrl)
+        public async Task<ActionResult<TrackList>> DeleteList(int uid,string pageUrl)
         {
             var uLists = await _context.TrackLists.Where(e => e.UserId == uid).ToListAsync();
 
