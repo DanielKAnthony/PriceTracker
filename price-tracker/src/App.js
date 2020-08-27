@@ -10,7 +10,7 @@ export default class App extends Component{
   constructor(props){
     super(props);
 
-    this.state = {};
+    this.state = {}; 
   }
 
   isLoggedIn = () => {
@@ -29,7 +29,7 @@ export default class App extends Component{
           <Route exact path='/amazon-lists' component={PtListPage} />:
           <Redirect to='/login' component={AuthParent}/>
           } */}
-          <Route exact path='/amazon-lists' component={PtListPage} />
+          <Route exact path='/price-lists' component={PtListPage} />
 
         </Switch>
 

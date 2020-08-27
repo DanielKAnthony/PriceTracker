@@ -89,7 +89,7 @@ const PtNavbar = () => {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem onClick={() => window.location.href="/pt-lists"}>
+      <MenuItem onClick={() => window.location.href="/price-lists"}>
         My Items
       </MenuItem>
       <MenuItem onClick={() => window.location.href="/analytics"}>
