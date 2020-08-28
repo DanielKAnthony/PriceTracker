@@ -30,7 +30,7 @@ namespace PriceTrackerApp
 
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = "amz-tracker/build";
+                configuration.RootPath = "price-tracker/build";
             });
         }
 
@@ -58,7 +58,7 @@ namespace PriceTrackerApp
             app.UseMvc();
             app.UseSpa(spa =>
             {
-                spa.Options.SourcePath = Path.Join(env.ContentRootPath, "amz-tracker");
+                spa.Options.SourcePath = Path.Join(env.ContentRootPath, "price-tracker");
 
                 if (env.IsDevelopment())
                 {

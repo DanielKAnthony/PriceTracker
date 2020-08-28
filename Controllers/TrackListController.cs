@@ -1,10 +1,12 @@
-﻿using System;
+﻿using System.Web;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PriceTrackerApp.Models;
+using PriceTrackerApp.ScraperUtils;
 
 namespace PriceTrackerApp.Controllers
 {
@@ -20,13 +22,13 @@ namespace PriceTrackerApp.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TrackList>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<TrackList>>> GetLists()
         {
             return await _context.TrackLists.ToListAsync();
         }
 
         [HttpGet("{UserId}")]
-        public async Task<ActionResult<IEnumerable<TrackList>>> GetUser(int uid)
+        public async Task<ActionResult<IEnumerable<TrackList>>> GetUserLists(int uid)
         {
             var userLists = await _context.TrackLists.Where(e => e.UserId == uid).ToListAsync();
 
@@ -36,6 +38,24 @@ namespace PriceTrackerApp.Controllers
             }
 
             return userLists;
+        }
+
+        [HttpGet("scrape-site")]
+        public async Task<string[]> GetSiteInfo(string url)
+        {
+            url = HttpUtility.UrlDecode(url);
+            string[] res = await PriceScraper.FetchData(url);
+
+            Console.WriteLine(res.Length);
+            if (res.Length > 0)
+            {
+                for(int i = 0; i < res.Length; ++i)
+                {
+                    Console.WriteLine(res[i]);
+                }
+            }
+
+            return res;
         }
 
         [HttpPost]
