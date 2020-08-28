@@ -28,7 +28,10 @@ namespace PriceTrackerApp.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     PageUrl = table.Column<string>(nullable: true),
-                    MaxPrice = table.Column<float>(nullable: false),
+                    MaxPrice = table.Column<decimal>(nullable: false),
+                    CurrentPrice = table.Column<decimal>(nullable: false),
+                    Vendor = table.Column<string>(nullable: true),
+                    ItemName = table.Column<string>(nullable: true),
                     UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>

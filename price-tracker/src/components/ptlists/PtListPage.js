@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import {sites} from '../../Constants';
-import TextField from '@material-ui/core/TextField';
+import {TextField, LinearProgress} from '@material-ui/core';
 import './styling/PageStyle.css';
 
 export default class PtListPage extends Component{
@@ -70,8 +70,10 @@ export default class PtListPage extends Component{
         axios.get('lists/tracklist/scrape-site', {
             params:
                 {url: encodeURIComponent(this.state.itemUrl)}
-        })
+        }).catch(err => {this.setState({linkErr: "Connection failed with "+err.response.status});})
             .then(res => {
+                this.setState({isLoading: false});
+                if(this.state.linkErr !== "") return;
                 this.setState({
                     isLoading: false,
                     itemInfo: {
@@ -95,7 +97,6 @@ export default class PtListPage extends Component{
                     }} onSubmit={e => this.addNewItem(e)}>
 
                     <h2 style={{ margin: "auto", color: "#003fa3" }}>Add new item</h2>
-                    {this.state.isLoading && <div>Put loading gif here</div>}
                     <TextField
                     name="itemLink"
                     disabled={this.state.isLoading}
@@ -115,6 +116,7 @@ export default class PtListPage extends Component{
                     <br />
                         <button className="TrBtn" disabled={this.state.isLoading} type="submit"
                         onClick={e => this.addNewItem(e)}>Submit</button>
+                        {this.state.isLoading && <div><LinearProgress /></div>}
                 </form>
 
                     {this.state.itemReady &&

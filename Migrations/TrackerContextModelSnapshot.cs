@@ -48,14 +48,23 @@ namespace PriceTrackerApp.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<float>("MaxPrice")
-                        .HasColumnType("real");
+                    b.Property<decimal>("CurrentPrice")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("ItemName")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("MaxPrice")
+                        .HasColumnType("numeric");
 
                     b.Property<string>("PageUrl")
                         .HasColumnType("text");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
+
+                    b.Property<string>("Vendor")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
