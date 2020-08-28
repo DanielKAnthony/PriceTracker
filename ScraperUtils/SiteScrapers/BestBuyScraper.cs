@@ -18,9 +18,10 @@ namespace PriceTrackerApp.ScraperUtils.SiteScrapers
             var prodPrice = elem.QuerySelectorAll("div").Where(e => e.HasAttribute("class")
                 && e.GetAttribute("class").StartsWith("price_FHDfG large_3aP7Z "));
 
-            //remove non numeric chars and store decimal
+            string priceStr = new string(prodPrice.ToList()[0].TextContent
+                .Where(n => char.IsDigit(n) || n == '.').ToArray());
 
-            ans[i] = prodPrice.ToList()[0].TextContent;
+            ans[1] = priceStr.Insert(priceStr.Length - 2, ".");
 
             return ans;
         }

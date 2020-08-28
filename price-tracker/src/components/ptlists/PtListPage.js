@@ -19,7 +19,8 @@ export default class PtListPage extends Component{
                 price: "",
                 vendor: ""
             },
-            itemReady: false
+            itemReady: false,
+            isLoading: false
         };
 
         //get lists here
@@ -38,7 +39,12 @@ export default class PtListPage extends Component{
         
             for(let i = 0;i<sites.length;++i){
                 if (temp.hostname.includes(sites[i])) {
-                    this.setState({ itemInfo: { ...this.state.itemInfo,vendor: sites[i] } });
+                    this.setState({
+                        itemInfo: {
+                            ...this.state.itemInfo,
+                            vendor: sites[i].charAt(0).toUpperCase() + sites[i].slice(1)
+                        }
+                    });
                     return true;
                 }
             }
@@ -52,18 +58,29 @@ export default class PtListPage extends Component{
 
     addNewItem = e => {
         e.preventDefault();
+        if (this.state.isLoading) return;
         this.setState({ linkErr: "" });
+        this.setState({ isLoading: true });
 
-        if (!this.validUrl(this.state.itemUrl))
+        if (!this.validUrl(this.state.itemUrl)) {
+            this.setState({ isLoading: false });
             return;
+        }
 
-        axios.get('lists/tracklist/scrape-site', { params: { url: encodeURIComponent(this.state.itemUrl) } })
+        axios.get('lists/tracklist/scrape-site', {
+            params:
+                {url: encodeURIComponent(this.state.itemUrl)}
+        })
             .then(res => {
-                this.setState({ itemInfo: { ...this.state.itemInfo, name: res.data[0] } });
-                this.setState({ itemInfo: { ...this.state.itemInfo, price: res.data[1]} });
-                console.log("Site page name: " + res.data[0]);
-                console.log("Site page price: " + res.data[1]);
-                this.setState({ itemReady: true });
+                this.setState({
+                    isLoading: false,
+                    itemInfo: {
+                        ...this.state.itemInfo,
+                        name: res.data[0],
+                        price: "$" + res.data[1]
+                    },
+                    itemReady:true
+                });
             })
     }
 
@@ -75,10 +92,13 @@ export default class PtListPage extends Component{
                 <form type="submit" style={{
                     height: "fit-content",
                     width: "fit-content", margin: "auto"
-                }} onSubmit={e => this.addNewItem(e)}>
-                    <h2 style={{ margin: "auto", color:"#003fa3"}}>Add new item</h2>
+                    }} onSubmit={e => this.addNewItem(e)}>
+
+                    <h2 style={{ margin: "auto", color: "#003fa3" }}>Add new item</h2>
+                    {this.state.isLoading && <div>Put loading gif here</div>}
                     <TextField
                     name="itemLink"
+                    disabled={this.state.isLoading}
                     id="uField"
                     style={{ width: "75vw", margin: "auto" }}
                     placeholder="Item URL"
@@ -93,7 +113,7 @@ export default class PtListPage extends Component{
                     helperText={this.state.linkErr}
                     />
                     <br />
-                    <button className="TrBtn" type="submit"
+                        <button className="TrBtn" disabled={this.state.isLoading} type="submit"
                         onClick={e => this.addNewItem(e)}>Submit</button>
                 </form>
 
@@ -103,7 +123,8 @@ export default class PtListPage extends Component{
                                 <tbody>
                                     <tr><th>Name</th><td>{this.state.itemInfo.name}</td></tr>
                                     <tr><th>Price</th><td>{this.state.itemInfo.price}</td></tr>
-                                    <tr><th>Vendor</th><td><a href={this.state.itemUrl}>{this.state.itemInfo.vendor}</a></td></tr>
+                                <tr><th>Vendor</th><td>
+                                    <a href={this.state.itemUrl}>{this.state.itemInfo.vendor}</a></td></tr>
                                 </tbody>
                             </table>
                         <button className="TableBtn">Confirm</button>

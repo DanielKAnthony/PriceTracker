@@ -23,7 +23,8 @@ namespace PriceTrackerApp.ScraperUtils.SiteScrapers
                 res = elem.QuerySelectorAll("div").Where(e => e.HasAttribute("class") &&
                 e.GetAttribute("class") == "item-price__normal");
 
-            ans[1] = res.ToList()[0].TextContent;
+            ans[1] = new string(res.ToList()[0].TextContent
+                .Where(n => char.IsDigit(n) || n == '.').ToArray());
             
             return ans;
         }

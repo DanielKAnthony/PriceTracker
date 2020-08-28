@@ -19,7 +19,8 @@ namespace PriceTrackerApp.ScraperUtils.SiteScrapers
             var prodPrice = elem.QuerySelectorAll("span").Where(e => e.HasAttribute("itemprop")
                  && e.GetAttribute("itemprop") == "price");
 
-            ans[1] = prodPrice.ToList()[0].TextContent;
+            ans[1] = new string(prodPrice.ToList()[0].TextContent
+                .Where(n => char.IsDigit(n) || n == '.').ToArray());
 
             return ans;
         }
