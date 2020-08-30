@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import {sites} from '../../Constants';
-import {TextField, LinearProgress} from '@material-ui/core';
+import { sites } from '../../Constants';
+import { TextField, LinearProgress, FormControlLabel, Checkbox, CircularProgress } from '@material-ui/core';
+import Cookies from 'js-cookie';
 import './styling/PageStyle.css';
 
 export default class PtListPage extends Component{
@@ -19,8 +20,12 @@ export default class PtListPage extends Component{
                 price: "",
                 vendor: ""
             },
-            itemReady: false,
-            isLoading: false
+            itemReady:false,
+            isLoading: false,
+            maxPrice: 0.00,
+            priceEdit: false,
+            priceErr: "",
+            postSend: false,
         };
 
         //get lists here
@@ -70,7 +75,8 @@ export default class PtListPage extends Component{
         axios.get('lists/tracklist/scrape-site', {
             params:
                 {url: encodeURIComponent(this.state.itemUrl)}
-        }).catch(err => {this.setState({linkErr: "Connection failed with "+err.response.status});})
+        }).catch(err => {
+            this.setState({linkErr: `Connection failed with ${err.response.status}`});})
             .then(res => {
                 this.setState({isLoading: false});
                 if(this.state.linkErr !== "") return;
@@ -84,6 +90,36 @@ export default class PtListPage extends Component{
                     itemReady:true
                 });
             })
+    }
+
+    postList = () => {
+        if (this.state.linkErr !== this.state.priceErr) return;
+        this.setState({ postSend: true });
+
+        const listData = {
+            "PageUrl": this.state.itemUrl.startsWith("https://www.") ? this.state.itemUrl:
+            "https://www."+this.state.itemUrl,
+            "MaxPrice": parseFloat(this.state.maxPrice),
+            "CurrentPrice": parseFloat(this.state.itemInfo.price.slice(1)),
+            "Vendor": this.state.itemInfo.vendor,
+            "itemName": this.state.itemInfo.name,
+            "ListedEmail": Cookies.get("email"),
+            "UserId": 0
+        }
+
+        axios.post('/lists/tracklist', listData).catch(err => {
+            this.setState({
+                linkErr: err.response.status === 404 ? "Item is already listed" :
+                    `Failed with ${err.response.status}. Try another link`
+            });
+        })
+            .then(res => {
+                this.setState({ postSend: false });
+                try {
+                    if (res.data !== undefined)
+                        window.location.reload();
+                } catch { return; }  
+        });
     }
 
     render() {
@@ -120,7 +156,8 @@ export default class PtListPage extends Component{
                 </form>
 
                     {this.state.itemReady &&
-                        <div style={{margin:"auto",width:"75vw"}}>
+                        <div style={{ margin: "auto", width: "75vw" }}>
+                            {this.state.postSend && <div className="CLoad"><CircularProgress /></div>}
                             <table id="newITable">
                                 <tbody>
                                     <tr><th>Name</th><td>{this.state.itemInfo.name}</td></tr>
@@ -129,10 +166,46 @@ export default class PtListPage extends Component{
                                     <a href={this.state.itemUrl}>{this.state.itemInfo.vendor}</a></td></tr>
                                 </tbody>
                             </table>
-                        <button className="TableBtn">Confirm</button>
+                        <FormControlLabel
+                            value="end"
+                            control={<Checkbox color="primary" />}
+                            label="Notify me when the price falls to a certain value"
+                            labelPlacement="end"
+                            onClick={() => {
+                                if (this.state.priceEdit) this.setState({ priceErr: "", maxPrice: 0.00 });
+                                this.setState({ priceEdit: !this.state.priceEdit });
+                            }}
+                        />
+                        {this.state.priceEdit && <div>
+                            <TextField
+                                name="itemLink"
+                                disabled={this.state.isLoading}
+                                id="uField"
+                                style={{ width: "75vw", margin: "auto",marginBottom:"1vh" }}
+                                placeholder="Target price"
+                                variant="outlined"
+                                onChange={e => {
+                                    if ((isNaN(parseFloat(e.target.value))) ||
+                                        (e.target.value.indexOf('.') !== -1 &&
+                                        e.target.value.split(".")[1].length > 2)
+                                    ) { this.setState({ priceErr: "Invalid" });}
+                                     else {
+                                        this.setState({priceErr: "",maxPrice: e.target.value});
+                                    }
+                                }}
+                                
+                                error={this.state.priceErr !== ""}
+                                helperText={this.state.priceErr}
+                            />
+                        </div>}
+                        <button className="TableBtn" onClick={() => { this.postList() }}>Confirm</button>
                         <button className="TableBtn" onClick={() => {
                             this.setState({
                                 itemUrl: "",
+                                linkErr: "",
+                                priceErr: "",
+                                priceEdit: false,
+                                maxPrice: 0.00,
                                 itemInfo: {
                                     ...this.state.itemInfo,
                                     name: "",

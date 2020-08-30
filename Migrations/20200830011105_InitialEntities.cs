@@ -28,10 +28,11 @@ namespace PriceTrackerApp.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     PageUrl = table.Column<string>(nullable: true),
-                    MaxPrice = table.Column<decimal>(nullable: false),
-                    CurrentPrice = table.Column<decimal>(nullable: false),
+                    MaxPrice = table.Column<float>(nullable: false),
+                    CurrentPrice = table.Column<float>(nullable: false),
                     Vendor = table.Column<string>(nullable: true),
                     ItemName = table.Column<string>(nullable: true),
+                    ListedEmail = table.Column<string>(nullable: true),
                     UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -73,6 +74,7 @@ namespace PriceTrackerApp.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     DaysAgo = table.Column<int>(nullable: false),
                     Price = table.Column<float>(nullable: false),
+                    ItemName = table.Column<string>(nullable: true),
                     TrackListId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>

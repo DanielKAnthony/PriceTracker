@@ -10,6 +10,7 @@ namespace PriceTrackerApp.Models
         public int Id { get; set; }
         public int DaysAgo { get; set; }
         public float Price { get; set; }
+        public string ItemName { get; set; }
         public int TrackListId { get; set; }
         public TrackList TrackList { get; set; }
     }

@@ -27,7 +27,7 @@ namespace PriceTrackerApp.Controllers
             return await _context.TrackLists.ToListAsync();
         }
 
-        [HttpGet("{UserId}")]
+        [HttpGet("{userId}")]
         public async Task<ActionResult<IEnumerable<TrackList>>> GetUserLists(int uid)
         {
             var userLists = await _context.TrackLists.Where(e => e.UserId == uid).ToListAsync();
@@ -59,26 +59,44 @@ namespace PriceTrackerApp.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> PostList([FromBody] TrackList azList)
+        public async Task<ActionResult<TrackList>> PostList([FromBody] TrackList azList)
         {
-            //check for duplicate page here
-            var uLists = await _context.TrackLists.Where(e => e.UserId == azList.UserId).ToListAsync();
+            //match foreign key
+            User uObj = _context.Users.SingleOrDefault(user => user.Email == azList.ListedEmail);
+            azList.UserId = uObj.Id;
 
-            if (uLists == null) return null;
+            //check for duplicate
+            var uLists = await _context.TrackLists
+                .Where(e => (e.UserId == azList.UserId) &&
+                (e.PageUrl == azList.PageUrl)).ToListAsync();
 
-            foreach(var u in uLists)
-            {
-                if(u.PageUrl == azList.PageUrl)
-                {
-                    return null;
-                }
-            }
-            //get user here and init TL object -- change params to FromQuery
+            if (uLists.Count > 0) return NotFound();
+
             _context.TrackLists.Add(azList);
 
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetList", new { id = azList.Id }, azList);
+            await AppendPriceRecord(azList.ItemName, azList.CurrentPrice, azList.UserId);
+
+            return CreatedAtAction("GetUserLists", new { userId = azList.UserId }, azList);
+        }
+
+        private async Task<ActionResult> AppendPriceRecord(string itemName, float price, int uid)
+        {
+            var tmpId = _context.TrackLists.SingleOrDefault(t =>
+            t.ItemName == itemName && t.UserId == uid);
+
+            PriceRecord pr = new PriceRecord
+            {
+                DaysAgo = 0,
+                Price = price,
+                ItemName = itemName,
+                TrackListId = tmpId.Id
+            };
+
+            _context.ListTrends.Add(pr);
+           await _context.SaveChangesAsync();
+           return NoContent();
         }
 
         [HttpPut("{Id}")]

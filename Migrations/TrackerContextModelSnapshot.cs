@@ -28,6 +28,9 @@ namespace PriceTrackerApp.Migrations
                     b.Property<int>("DaysAgo")
                         .HasColumnType("integer");
 
+                    b.Property<string>("ItemName")
+                        .HasColumnType("text");
+
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
@@ -48,14 +51,17 @@ namespace PriceTrackerApp.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<decimal>("CurrentPrice")
-                        .HasColumnType("numeric");
+                    b.Property<float>("CurrentPrice")
+                        .HasColumnType("real");
 
                     b.Property<string>("ItemName")
                         .HasColumnType("text");
 
-                    b.Property<decimal>("MaxPrice")
-                        .HasColumnType("numeric");
+                    b.Property<string>("ListedEmail")
+                        .HasColumnType("text");
+
+                    b.Property<float>("MaxPrice")
+                        .HasColumnType("real");
 
                     b.Property<string>("PageUrl")
                         .HasColumnType("text");
@@ -114,7 +120,7 @@ namespace PriceTrackerApp.Migrations
             modelBuilder.Entity("PriceTrackerApp.Models.PriceRecord", b =>
                 {
                     b.HasOne("PriceTrackerApp.Models.TrackList", "TrackList")
-                        .WithMany("PriceTrend")
+                        .WithMany()
                         .HasForeignKey("TrackListId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

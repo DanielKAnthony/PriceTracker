@@ -123,7 +123,7 @@ const PtNavbar = () => {
             {isLoggedIn ? 
             <div style={{ display: "flex", flexDirection: "row" }}>
                 <div>
-                <h4 onClick={() => window.location.href="/pt-lists"}
+                <h4 onClick={() => window.location.href="/price-lists"}
                     style={{marginRight:"2vw",cursor:"pointer"}}
                 >My Items</h4>
                 </div>

@@ -27,6 +27,7 @@
     border: 1px solid rgb(184, 184, 184);
     color: blue;
     font:Tahoma, Geneva, sans-serif;
+    cursor: pointer;
 }
 
 @media (max-aspect-ratio:99/100), (max-height:599px){
