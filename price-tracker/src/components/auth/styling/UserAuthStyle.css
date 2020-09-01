@@ -30,6 +30,13 @@
     cursor: pointer;
 }
 
+#CLoader{
+    position:absolute;
+    margin-top:25%;
+    margin-left:-5%;
+    z-index:999;
+}
+
 @media (max-aspect-ratio:99/100), (max-height:599px){
     .RegParent{
         margin: auto;
@@ -39,11 +46,29 @@
     }
     @media(orientation: landscape){
         .RegParent{margin-top:10vw;}
+        #CLoader {
+            margin-top:15%;
+            margin-left:-3%;
+        }
     }
     #authBtn{
         height: auto;
         padding-top: 1%;
         padding-bottom: 1%;
+    }
+}
+
+@media(min-width:2500px){
+    #authBtn{
+        height:auto;
+        width:25%;
+    }
+    #CLoader {
+        margin-top: 15%;
+        margin-left: -2%;
+    }
+    .AuthForm{
+        padding-top: 20vh;
     }
 }
 

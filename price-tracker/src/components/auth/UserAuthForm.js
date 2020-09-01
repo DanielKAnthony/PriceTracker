@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import TextField from '@material-ui/core/TextField';
+import { TextField, CircularProgress } from '@material-ui/core';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import './styling/UserAuthStyle.css';
@@ -16,7 +16,8 @@ export default class UserAuthForm extends Component{
             password: "",
             emailErr: "",
             userErr: "",
-            passErr: ""
+            passErr: "",
+            isLoading: false
         };
     }
 
@@ -63,6 +64,7 @@ export default class UserAuthForm extends Component{
             return false;
 
         var failed = false;
+        this.setState({ isLoading: true });
         axios.get('api/user/logauth', {
             params: {
                 namefield: this.state.email,
@@ -73,6 +75,7 @@ export default class UserAuthForm extends Component{
             this.setState({ emailErr: "Invalid name or password" });
             failed = true;
         }).then(res => {
+            this.setState({ isLoading: false });
             if (failed) return false;
             Cookies.set("username", res.data.username, { sameSite: 'strict' });
             Cookies.set("email", res.data.email, { sameSite: 'strict' });
@@ -88,17 +91,26 @@ export default class UserAuthForm extends Component{
 
     handleSubmit = e => {
         e.preventDefault();
+        if (this.state.isLoading) return;
 
         if(!this.formIsValid()) return;
 
         if (!this.isLogin) {
+            this.setState({ isLoading: true });
             const userData = {
                 "Email": this.state.email,
                 "Username": this.state.username,
                 "Password": this.state.password
             }
-            axios.post('/api/user', userData).then(res => {
+            axios.post('/api/user', userData).catch(e => {
                 this.setState({
+                    isLoading: false,
+                    emailErr: `Something went wrong: ${e.response.status}`
+                })
+            })
+            .then(res => {
+                this.setState({
+                    isLoading: false,
                     emailErr: res.data.email === null ? "Email taken" : "",
                     userErr: res.data.username === null ? "Username taken" : ""
                 });
@@ -117,26 +129,29 @@ export default class UserAuthForm extends Component{
         return(
             <div className="RegParent">
                 <form type="submit" className="AuthForm" onSubmit={this.handleSubmit}>
-                <h2 style={{marginBottom:"3vh"}}>{this.isLogin ? "Sign In":"Register"}</h2>
-            <TextField 
-            style={{marginBottom:"2%"}}
-                name="email"
-                placeholder={this.isLogin ? "Email or username":"Email"}
-                variant="outlined" 
-                onChange={e => this.setState({email:e.target.value})}
-                error={this.state.emailErr !== ""}
-                helperText={this.state.emailErr}
-                />
-            <br />
+                {this.state.isLoading && <CircularProgress id="CLoader" />}
+                <h2 style={{ marginBottom: "3vh" }}>{this.isLogin ? "Sign In" : "Register"}</h2>
+                <TextField 
+                style={{marginBottom:"2%"}}
+                    name="email"
+                    placeholder={this.isLogin ? "Email or username":"Email"}
+                    variant="outlined" 
+                    onChange={e => this.setState({ email: e.target.value })}
+                    disabled={this.state.isLoading}
+                    error={this.state.emailErr !== ""}
+                    helperText={this.state.emailErr}
+                    />
+                <br />
             
             {!this.isLogin &&
-            <div>
+                <div>
                 <TextField 
                 style={{marginBottom:"2%"}}
                 name="username"
                 placeholder="Username"
                 variant="outlined" 
-                onChange={e => this.setState({username:e.target.value})}
+                onChange={e => this.setState({ username: e.target.value })}
+                disabled={this.state.isLoading}
                 error={this.state.userErr !== ""}
                 helperText={this.state.userErr}
                 />
@@ -150,7 +165,8 @@ export default class UserAuthForm extends Component{
                 placeholder="Password"
                 variant="outlined"
                 type="password"
-                onChange={e => this.setState({password:e.target.value})}
+                onChange={e => this.setState({ password: e.target.value })}
+                disabled={this.state.isLoading}
                 error={this.state.passErr !== ""}
                 helperText={this.state.passErr} 
             />
