@@ -1,11 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿.ItemParent {
+    width: 20vw;
+    text-overflow: ellipsis;
+    background-color: rgba(173, 191, 219,0.25);
+    border-radius: 2%;
+    box-shadow: 1px 3px 5px grey;
+    min-height: 35vh;
+    margin: 1vh 2vw 1vw 2vh;
+}
 
-namespace PriceTrackerApp.price_tracker.src.components.ptlists.styling
-{
-    public class ItemStyle
-    {
+@media(max-aspect-ratio:1/1), (max-width:850px){
+    .ItemParent {
+        width: 80vw;
+        margin-bottom: 1vh;
+        margin:auto;
+    }
+    @media(orientation:landscape){
+        .ItemParent {
+            width: 50vw;
+        }
     }
 }

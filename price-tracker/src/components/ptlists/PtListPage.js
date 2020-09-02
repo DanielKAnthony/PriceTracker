@@ -38,6 +38,7 @@ export default class PtListPage extends Component{
         axios.get(`/lists/tracklist/${Cookies.get("email")}`)
             .then(res => {
                 if (res.data.length > 0) {
+                    console.log(res.data);
                     for (let i = 0; i < res.data.length; ++i)
                         this.iList.push(res.data[i]);
                     this.setState({ hasItems: this.iList.length > 0 });
@@ -212,6 +213,7 @@ export default class PtListPage extends Component{
                                 helperText={this.state.priceErr}
                             />
                         </div>}
+                        <br/>
                         <button className="TableBtn" onClick={() => { this.postList() }}>Confirm</button>
                         <button className="TableBtn" onClick={() => {
                             this.setState({
@@ -237,12 +239,12 @@ export default class PtListPage extends Component{
                     }
                 </div>
                 {this.state.hasItems &&
-                    <div>
+                    <div className="uItems">
                     <br />
                     {this.iList.map(item =>
                         <PriceItem key={this.keyIndex++}
                             title={item.itemName} price={item.currentPrice}
-                            vendor={item.vendor}
+                            vendor={item.vendor} maxPrice={item.maxPrice}
 
                         />
                     )}

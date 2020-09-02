@@ -42,3 +42,20 @@
     position: fixed;
     left:50%;
 }
+
+.uItems {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin:auto;
+    margin-top: 1vh;
+    min-width: 20vw;
+    margin-left: 1vw;
+    margin-right: 1vw;
+}
+
+@media(max-aspect-ratio:1/1), (max-width:850px){
+    .uItems {
+        display:block;
+    }
+}

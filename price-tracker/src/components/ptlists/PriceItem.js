@@ -1,4 +1,5 @@
-import React,{Component} from 'react';
+import React, { Component } from 'react';
+import './styling/ItemStyle.css';
 
 export default class PriceItem extends Component{
     constructor(props){
@@ -11,9 +12,9 @@ export default class PriceItem extends Component{
         return(
             <div className="ItemParent">
                 <h3>{this.props.title}</h3>
-                <h3>{this.props.price}</h3>
-                <h3>{this.props.vendor}</h3>
-                <h3>Notification price</h3>
+                <h4>${this.props.price}</h4>
+                <h4>{this.props.vendor}</h4>
+                <h3>{ this.props.maxPrice > 0 ? `Max price: $${this.props.maxPrice}` : "No notification"}</h3>
             </div>
         )
     }
