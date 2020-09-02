@@ -27,17 +27,12 @@ namespace PriceTrackerApp.Controllers
             return await _context.TrackLists.ToListAsync();
         }
 
-        [HttpGet("{userId}")]
-        public async Task<ActionResult<IEnumerable<TrackList>>> GetUserLists(int uid)
+        [HttpGet("{uEmail}")]
+        public async Task<ActionResult<IEnumerable<TrackList>>> GetUserLists(string uEmail)
         {
-            var userLists = await _context.TrackLists.Where(e => e.UserId == uid).ToListAsync();
-
-            if (userLists == null)
-            {
-                return NotFound();
-            }
-
-            return userLists;
+            return await _context.TrackLists
+                .Where(u => u.ListedEmail == uEmail).ToListAsync();
+            //return uLists.ToList();
         }
 
         [HttpGet("scrape-site")]
@@ -78,7 +73,7 @@ namespace PriceTrackerApp.Controllers
 
             await AppendPriceRecord(azList.ItemName, azList.CurrentPrice, azList.UserId);
 
-            return CreatedAtAction("GetUserLists", new { userId = azList.UserId }, azList);
+            return CreatedAtAction("GetUserLists", new { uEmail = azList.ListedEmail }, azList);
         }
 
         private async Task<ActionResult> AppendPriceRecord(string itemName, float price, int uid)

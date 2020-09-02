@@ -3,6 +3,7 @@ import axios from 'axios';
 import { sites } from '../../Constants';
 import { TextField, LinearProgress, FormControlLabel, Checkbox, CircularProgress } from '@material-ui/core';
 import Cookies from 'js-cookie';
+import PriceItem from './PriceItem';
 import './styling/PageStyle.css';
 
 export default class PtListPage extends Component{
@@ -26,9 +27,22 @@ export default class PtListPage extends Component{
             priceEdit: false,
             priceErr: "",
             postSend: false,
+            hasItems: false
         };
 
-        //get lists here
+        this.keyIndex = 0;
+        this.iList = [];
+    }
+
+    componentDidMount() {
+        axios.get(`/lists/tracklist/${Cookies.get("email")}`)
+            .then(res => {
+                if (res.data.length > 0) {
+                    for (let i = 0; i < res.data.length; ++i)
+                        this.iList.push(res.data[i]);
+                    this.setState({ hasItems: this.iList.length > 0 });
+                }
+            });
     }
 
     validUrl = url => {
@@ -221,7 +235,19 @@ export default class PtListPage extends Component{
 
                         </div>
                     }
-            </div>
+                </div>
+                {this.state.hasItems &&
+                    <div>
+                    <br />
+                    {this.iList.map(item =>
+                        <PriceItem key={this.keyIndex++}
+                            title={item.itemName} price={item.currentPrice}
+                            vendor={item.vendor}
+
+                        />
+                    )}
+                    </div>
+                }
             </div>
         )
     }

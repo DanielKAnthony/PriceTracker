@@ -1,0 +1,11 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace PriceTrackerApp.price_tracker.src.components.ptlists.styling
+{
+    public class ItemStyle
+    {
+    }
+}
