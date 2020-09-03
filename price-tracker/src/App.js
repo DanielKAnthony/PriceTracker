@@ -27,14 +27,15 @@ export default class App extends Component{
         <Switch>
           <Route exact path='/' component={Homepage}/>
           <Route exact path='/(register|login)' component={AuthParent}/>
+          <Route exact path='/profile' component={Profile} />
           {this.isLoggedIn() ?
           <Route exact path='/price-lists' component={PtListPage} />:
           <Redirect to='/login' component={AuthParent}/>
           }
-          {this.isLoggedIn() ?
+          {/* {this.isLoggedIn() ?
           <Route exact path='/profile' component={Profile} />:
           <Redirect to='/login' component={AuthParent}/>
-          }
+          } */}
         </Switch>
       </Router>
 

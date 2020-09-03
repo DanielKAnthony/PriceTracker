@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import { TextField } from "@material-ui/core";
 import Cookies from 'js-cookie';
 import './styling/ProfileStyle.css';
+import PassChange from './PassChange';
+import DeleteAccount from './DeleteAccount';
 
 export default class Profile extends Component{
     constructor(props){
@@ -72,8 +74,12 @@ export default class Profile extends Component{
                 </div>
 
                 <div className="AccAdmin">
-                <button>Change Password</button><br/>
-                <button>Delete Account</button>
+                {this.state.passEdit && <PassChange/>}
+                <button onClick={() => {this.setState({passEdit: !this.state.passEdit})}}>
+                    Change Password</button><br/>
+                {this.state.delAcc && <DeleteAccount/>}
+                <button onClick={() => {this.setState({delAcc: !this.state.delAcc})}}>
+                    Delete Account</button>
                 </div>
 
             </div>
