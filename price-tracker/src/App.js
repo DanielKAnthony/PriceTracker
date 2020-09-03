@@ -4,6 +4,7 @@ import Homepage from './components/homepage/HomeParent';
 import AuthParent from './components/auth/AuthParent';
 import PtNavbar from './components/navbar/PtNavbar';
 import PtListPage from './components/ptlists/PtListPage';
+import Profile from './components/profile/Profile';
 import Cookies from 'js-cookie';
 
 export default class App extends Component{
@@ -22,6 +23,7 @@ export default class App extends Component{
     return(
       <Router forceRefresh={true}>
         <PtNavbar/>
+        
         <Switch>
           <Route exact path='/' component={Homepage}/>
           <Route exact path='/(register|login)' component={AuthParent}/>
@@ -29,10 +31,11 @@ export default class App extends Component{
           <Route exact path='/price-lists' component={PtListPage} />:
           <Redirect to='/login' component={AuthParent}/>
           }
-
+          {this.isLoggedIn() ?
+          <Route exact path='/profile' component={Profile} />:
+          <Redirect to='/login' component={AuthParent}/>
+          }
         </Switch>
-
-
       </Router>
 
     )

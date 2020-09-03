@@ -1,0 +1,29 @@
+.CredParent{
+    display: flex;
+    flex-direction: column;
+}
+.CredChild{
+    margin:auto;
+}
+.CredText{
+    width: 75vw;
+}
+.AccAdmin{
+    margin-top: 4vh;
+    margin-left: 12.5vw;
+}
+
+@media(min-width:850px){
+    .CredParent{
+        flex-direction: row;
+    }
+    .CredText{
+        width: 30vw;
+    }
+    #uField{
+        margin-left: -5vw;
+    }
+    .AccAdmin{
+        margin-left: 10vw;
+    }
+}
