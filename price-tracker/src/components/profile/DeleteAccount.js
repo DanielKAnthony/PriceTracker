@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
-import {TextField} from '@material-ui/core';
+import Cookies from 'js-cookie';
+import { TextField } from '@material-ui/core';
+import axios from 'axios';
 
 export default class DeleteAccount extends Component{
     constructor(props){
@@ -12,25 +14,49 @@ export default class DeleteAccount extends Component{
     }
 
     validateReq = () => {
+        this.setState({passErr: this.state.passConfirm.length === 0 ? "Required": ""});
+        if (this.state.passConfirm.length === 0) return false;
 
+        return true;
     }
 
     handleDelete = e => {
+        e.preventDefault();
+        if(!this.validateReq()) return;
 
+        axios.delete('api/user/del', {
+            params: {
+                email: Cookies.get("email"),
+                pass: this.state.passConfirm
+            }
+        }).catch(err => {
+            this.setState({
+                passErr: err.response.status === 404 ? "Incorrect password" :
+                    `Failed with ${err.response.status}. Try again later.`
+            })
+        }).then(res => {
+            if (res !== undefined) {
+                Cookies.remove("email");
+                Cookies.remove("username");
+                window.location.replace(window.location.origin+"/");
+            }
+        })
     }
 
     render(){
         return(
             <div>
-                <form>
+                <form onSubmit={e => this.handleDelete(e)}>
                     <TextField
                         name="passConfirm"
                         variant="outlined"
+                        placeholder="Password"
                         onChange={e=>{this.setState({passConfirm:e.target.value})}}
                         error={this.state.passErr !== ""}
                         helperText={this.state.passErr}
                     />
-                    <br/>
+                    <br />
+                    <button onSubmit={e => this.handleDelete(e)}>Delete</button>
                 </form>
             </div>
         )

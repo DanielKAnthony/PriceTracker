@@ -94,7 +94,14 @@ export default class PtListPage extends Component{
             this.setState({linkErr: `Connection failed with ${err.response.status}`});})
             .then(res => {
                 this.setState({isLoading: false});
-                if(this.state.linkErr !== "") return;
+                if (this.state.linkErr !== "") return;
+                if (res === undefined) {
+                    this.setState({ linkErr: "Page not found" });
+                    return;
+                } else if (res.data[1] === undefined) {
+                    this.setState({ linkErr: "Page not found" });
+                    return;
+                }
                 this.setState({
                     isLoading: false,
                     itemInfo: {
@@ -155,19 +162,19 @@ export default class PtListPage extends Component{
                     style={{ width: "75vw", margin: "auto" }}
                     placeholder="Item URL"
                     variant="outlined"
-                        onChange={e =>
-                            this.setState({
-                                itemUrl: e.target.value,
-                                linkErr: e.target.value.length === 0 ? "" : this.state.linkErr 
-                            })
-                        }
+                    onChange={e =>
+                        this.setState({
+                            itemUrl: e.target.value,
+                            linkErr: e.target.value.length === 0 ? "" : this.state.linkErr 
+                        })
+                    }
                     error={this.state.linkErr !== ""}
                     helperText={this.state.linkErr}
                     />
                     <br />
-                        <button className="TrBtn" disabled={this.state.isLoading} type="submit"
-                        onClick={e => this.addNewItem(e)}>Submit</button>
-                        {this.state.isLoading && <div><LinearProgress /></div>}
+                    <button className="TrBtn" disabled={this.state.isLoading} type="submit"
+                    onClick={e => this.addNewItem(e)}>Submit</button>
+                    {this.state.isLoading && <div><LinearProgress /></div>}
                 </form>
 
                     {this.state.itemReady &&
@@ -208,7 +215,6 @@ export default class PtListPage extends Component{
                                         this.setState({priceErr: "",maxPrice: e.target.value});
                                     }
                                 }}
-                                
                                 error={this.state.priceErr !== ""}
                                 helperText={this.state.priceErr}
                             />
@@ -245,7 +251,7 @@ export default class PtListPage extends Component{
                         <PriceItem key={this.keyIndex++}
                             title={item.itemName} price={item.currentPrice}
                             vendor={item.vendor} maxPrice={item.maxPrice}
-
+                            url={item.pageUrl}
                         />
                     )}
                     </div>

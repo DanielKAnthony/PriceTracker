@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
-import {TextField} from '@material-ui/core';
+import { TextField } from '@material-ui/core';
+import Cookies from 'js-cookie';
+import axios from 'axios';
 
 export default class PassChange extends Component{
     constructor(props){
@@ -16,11 +18,44 @@ export default class PassChange extends Component{
     }
 
     validChange = () => {
+        this.setState({
+            oldPassErr: this.state.oldPass.length === 0 ? "Required" : "",
+            newPassErr: this.state.newPass.length === 0 ? "Required" : "",
+            conNewPassErr: this.state.conNewPass.length === 0 ? "Required" : "",
+        })
 
+        if(this.state.oldPass.length === 0 || this.state.newPass.length === 0 ||
+            this.state.conNewPass.length === 0) return false;
+        
+        if(this.state.newPass !== this.state.conNewPass){
+            this.setState({conNewPassErr: "Passwords do not match"});
+            return false;
+        }
+
+        return true;
     }
 
     handlePassChange = e => {
         e.preventDefault();
+        if (!this.validChange()) return;
+
+        const data = {
+            Email: Cookies.get("email"),
+            Username: this.state.oldPass,
+            Password: this.state.newPass
+        }
+
+        axios.put('api/user/pass-change', data)
+        .catch(err => {
+            this.setState({
+                oldPassErr: err.response.status === 404 ? "Incorrect password" :
+                    `Failed with ${err.response.status}. Try again later.`
+            })
+        }).then(res => {
+            if (res !== undefined) {
+                window.location.reload();
+            }
+        })
     }
 
     render(){

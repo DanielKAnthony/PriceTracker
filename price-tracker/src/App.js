@@ -5,6 +5,7 @@ import AuthParent from './components/auth/AuthParent';
 import PtNavbar from './components/navbar/PtNavbar';
 import PtListPage from './components/ptlists/PtListPage';
 import Profile from './components/profile/Profile';
+import TrendPage from './components/statspage/TrendPage';
 import Cookies from 'js-cookie';
 
 export default class App extends Component{
@@ -27,18 +28,20 @@ export default class App extends Component{
         <Switch>
           <Route exact path='/' component={Homepage}/>
           <Route exact path='/(register|login)' component={AuthParent}/>
-          <Route exact path='/profile' component={Profile} />
           {this.isLoggedIn() ?
           <Route exact path='/price-lists' component={PtListPage} />:
           <Redirect to='/login' component={AuthParent}/>
           }
-          {/* {this.isLoggedIn() ?
+          {this.isLoggedIn() ?
           <Route exact path='/profile' component={Profile} />:
           <Redirect to='/login' component={AuthParent}/>
-          } */}
+          }
+          {this.isLoggedIn() ?
+          <Route exact path='/analytics' component={TrendPage} /> :
+          <Redirect to='/login' component={AuthParent} />
+          }
         </Switch>
       </Router>
-
     )
   }
 }

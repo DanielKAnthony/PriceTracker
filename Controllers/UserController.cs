@@ -19,12 +19,6 @@ namespace PriceTrackerApp.Controllers
     		_context = context;
     	}
 
-    	[HttpGet]
-    	public async Task<ActionResult<IEnumerable<User>>> GetUsers()
-    	{
-    		return await _context.Users.ToListAsync();
-    	}
-
         [HttpGet("logauth")]
         public async Task<ActionResult<User>> AuthUser([FromQuery] string namefield,[FromQuery] string pass)
         {
@@ -57,32 +51,60 @@ namespace PriceTrackerApp.Controllers
     		return user;
     	}
 
-    	[HttpPut("{Id}")]
-    	public async Task<IActionResult> PutUser(int id, User user)
+    	[HttpPut("email-change")]
+    	public async Task<IActionResult> PutEmail(User user)
     	{
-    		user.Id = id;
+            if (EmailExists(user.Email)) return NotFound();
 
-            _context.Entry(user).State = EntityState.Modified;
+            User uObj = _context.Users.Single(e => e.Username == user.Username);
 
-    		try{
-    			await _context.SaveChangesAsync();
-    		}
-    		catch(DbUpdateConcurrencyException)
-    		{
-    			if(!UserExists(id))
-    			{
-    				return NotFound();
-    			}
-    			else
-    			{
-    				throw;
-    			}
-    		}
+            user.Id = uObj.Id;
+            _context.Users.Remove(uObj);
+            _context.Users.Add(user);
 
-    		return NoContent();
+    		await _context.SaveChangesAsync();
+            
+            return Ok();
     	}
 
-    	[HttpPost]
+        [HttpPut("name-change")]
+        public async Task<IActionResult> PutUsername(User user)
+        {
+            if (UsernameExists(user.Username)) return NotFound();
+
+            User uObj = _context.Users.Single(e => e.Email == user.Email);
+
+            user.Id = uObj.Id;
+            _context.Users.Remove(uObj);
+            _context.Users.Add(user);
+
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [HttpPut("pass-change")]
+        public async Task<IActionResult> PutPass(UserRequestBody user)
+        {
+            var idObj = _context.Users.SingleOrDefault(e => e.Email == user.Email);
+            int uid = idObj.Id;
+
+            var pObj = _context.UserAuths.SingleOrDefault(e => e.UserId == uid);
+            if (pObj.Password != user.Username) return NotFound();
+            _context.UserAuths.Remove(pObj);
+
+            UserAuth tmp = new UserAuth
+            {
+                Password = user.Password,
+                UserId = uid
+            };
+            _context.UserAuths.Add(tmp);
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [HttpPost]
     	public async Task<ActionResult<User>> PostUser([FromBody] UserRequestBody user)
     	{
             User errUser = new User
@@ -137,25 +159,22 @@ namespace PriceTrackerApp.Controllers
             return NoContent();
         }
 
-    	[HttpDelete("{Id}")]
-    	public async Task<ActionResult<User>> DeleteUser(int id)
+    	[HttpDelete("del")]
+    	public async Task<ActionResult<User>> DeleteUser([FromQuery] string email,
+            [FromQuery] string pass)
     	{
-    		var user = await _context.Users.FindAsync(id);
+            //get user from db
+            User u = _context.Users.SingleOrDefault(e => e.Email == email);
+            if (u == null) return NotFound();
 
-    		if(user == null)
-    		{
-    			return NotFound();
-    		}
+            //authenticate password
+            if(_context.UserAuths.SingleOrDefault(e => e.Password == pass
+            && e.UserId == u.Id) == null) return NotFound();
 
-    		_context.Users.Remove(user);
-    		await _context.SaveChangesAsync();
+            _context.Users.Remove(u);
+            await _context.SaveChangesAsync();
 
-    		return user;
-    	}
-
-    	private bool UserExists(int id)
-    	{
-    		return _context.Users.Any(e => e.Id == id);
+    		return Ok();
     	}
 
         private bool EmailExists(string Email)

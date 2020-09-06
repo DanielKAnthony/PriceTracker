@@ -118,27 +118,19 @@ namespace PriceTrackerApp.Controllers
             return NoContent();
         }
 
-        [HttpDelete]
-        public async Task<ActionResult<TrackList>> DeleteList(int uid,string pageUrl)
+        [HttpDelete("del")]
+        public async Task<ActionResult<TrackList>> DeleteList([FromQuery] string url,
+            [FromQuery] string uEmail)
         {
-            var uLists = await _context.TrackLists.Where(e => e.UserId == uid).ToListAsync();
+            var tempItem = _context.TrackLists.SingleOrDefault(i => i.ListedEmail == uEmail &&
+             i.PageUrl == url);
 
-            if (uLists == null)
-            {
-                return NotFound();
-            }
+            if(tempItem == null) return NotFound();
 
-            foreach (var u in uLists)
-            {
-                if(u.PageUrl == pageUrl)
-                {
-                    _context.TrackLists.Remove(u);
-                    await _context.SaveChangesAsync();
-                    return u;
-                }
-            }
+            _context.TrackLists.Remove(tempItem);
+            await _context.SaveChangesAsync();
 
-            return NotFound();
+            return Ok();
         }
 
         private bool ListExists(int id)
