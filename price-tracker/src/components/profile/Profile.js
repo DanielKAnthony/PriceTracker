@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import { TextField } from "@material-ui/core";
 import Cookies from 'js-cookie';
-import './styling/ProfileStyle.css';
 import PassChange from './PassChange';
 import DeleteAccount from './DeleteAccount';
 import axios from 'axios';
+import './styling/ProfileStyle.css';
 
 export default class Profile extends Component{
     constructor(props){
@@ -132,8 +132,9 @@ export default class Profile extends Component{
                     helperText={this.state.emailErr}
                 />
                 <br/>
-                <button onSubmit={e => this.updateEmail(e)} hidden={!this.state.emailEdit}>Update</button>
-                <button type="button"
+                <button onSubmit={e => this.updateEmail(e)} hidden={!this.state.emailEdit}
+                className="uBtn">Update</button>
+                <button type="button" className="eBtn"
                 onClick={() => this.toggleName(true)}>
                     {this.state.emailEdit ? "Cancel": "Edit"}</button>
                 </form>
@@ -154,8 +155,9 @@ export default class Profile extends Component{
                     helperText={this.state.nameErr}
                 />
                 <br/>
-                <button onSubmit={e => this.updateUsername(e)} hidden={!this.state.nameEdit}>Update</button>
-                <button type="button"
+                <button onSubmit={e => this.updateUsername(e)} hidden={!this.state.nameEdit}
+                className="uBtn">Update</button>
+                <button type="button" className="eBtn"
                 onClick={() => this.toggleName(false)}>
                     {this.state.nameEdit ? "Cancel": "Edit"}</button>
                 </form>
@@ -165,11 +167,13 @@ export default class Profile extends Component{
 
                 <div className="AccAdmin">
                 {this.state.passEdit && <PassChange/>}
-                <button onClick={() => {this.setState({passEdit: !this.state.passEdit})}}>
-                    Change Password</button><br/>
+                <button onClick={() => {this.setState({passEdit: !this.state.passEdit})}}
+                className="eBtn" style={{maxWidth:"25%", marginBottom:"2%"}}>
+                    {this.state.passEdit ? "Cancel":"Change Password"}</button><br/>
                 {this.state.delAcc && <DeleteAccount/>}
-                <button onClick={() => {this.setState({delAcc: !this.state.delAcc})}}>
-                    Delete Account</button>
+                <button onClick={() => {this.setState({delAcc: !this.state.delAcc})}}
+                className="dBtn">
+                    {this.state.delAcc ? "Cancel":"Delete Account"}</button>
                 </div>
 
             </div>

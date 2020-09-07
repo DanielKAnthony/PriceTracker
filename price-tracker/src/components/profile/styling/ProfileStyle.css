@@ -12,7 +12,27 @@
     margin-top: 4vh;
     margin-left: 12.5vw;
 }
-
+.eBtn{
+    border:none;
+    box-shadow: 1px 2px 2px #b3b3b3;
+    width: 25%;
+    color:#003fa3;
+}
+.uBtn{
+    box-shadow: 1px 2px 2px #b3b3b3;
+    border:none;
+    width: 25%;
+    color:white;
+    background-color:#003fa3;
+}
+.dBtn{
+    border:1px solid red;
+    color:red;
+    background-color:white;
+    min-width:10%;
+    margin-top:2vh;
+    margin-bottom:1vh;
+}
 @media(min-width:850px){
     .CredParent{
         flex-direction: row;

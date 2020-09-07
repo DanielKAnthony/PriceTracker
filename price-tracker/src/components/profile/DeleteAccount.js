@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Cookies from 'js-cookie';
 import { TextField } from '@material-ui/core';
 import axios from 'axios';
+import './styling/ProfileStyle.css';
 
 export default class DeleteAccount extends Component{
     constructor(props){
@@ -46,7 +47,7 @@ export default class DeleteAccount extends Component{
     render(){
         return(
             <div>
-                <form onSubmit={e => this.handleDelete(e)}>
+                <form style={{width:"fit-content"}} onSubmit={e => this.handleDelete(e)}>
                     <TextField
                         name="passConfirm"
                         variant="outlined"
@@ -56,7 +57,8 @@ export default class DeleteAccount extends Component{
                         helperText={this.state.passErr}
                     />
                     <br />
-                    <button onSubmit={e => this.handleDelete(e)}>Delete</button>
+                    <button className="uBtn" style={{width:"100%",marginBottom:"1vh"}}
+                    onSubmit={e => this.handleDelete(e)}>Delete</button>
                 </form>
             </div>
         )

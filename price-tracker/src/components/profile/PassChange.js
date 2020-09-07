@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { TextField } from '@material-ui/core';
 import Cookies from 'js-cookie';
 import axios from 'axios';
+import './styling/ProfileStyle.css';
 
 export default class PassChange extends Component{
     constructor(props){
@@ -61,7 +62,7 @@ export default class PassChange extends Component{
     render(){
         return(
             <div>
-            <form onSubmit={e=>this.handlePassChange(e)}>
+            <form style={{width:"fit-content"}} onSubmit={e=>this.handlePassChange(e)}>
                 <TextField
                 name="oldPass"
                 variant="outlined"
@@ -89,7 +90,8 @@ export default class PassChange extends Component{
                 helperText={this.state.conNewPassErr}
                 />
                 <br/>
-                <button onSubmit={e=>this.handlePassChange(e)}>Submit</button>
+                <button className="uBtn" style={{width:"100%",marginBottom:"1vh"}}
+                onSubmit={e=>this.handlePassChange(e)}>Submit</button>
             </form>
             </div>
         )
