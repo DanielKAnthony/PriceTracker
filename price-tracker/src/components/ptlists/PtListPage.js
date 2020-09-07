@@ -27,7 +27,8 @@ export default class PtListPage extends Component{
             priceEdit: false,
             priceErr: "",
             postSend: false,
-            hasItems: false
+            hasItems: false,
+            iLoad: true
         };
 
         this.keyIndex = 0;
@@ -41,8 +42,8 @@ export default class PtListPage extends Component{
                     console.log(res.data);
                     for (let i = 0; i < res.data.length; ++i)
                         this.iList.push(res.data[i]);
-                    this.setState({ hasItems: this.iList.length > 0 });
                 }
+                this.setState({ hasItems: this.iList.length > 0, iLoad: false });
             });
     }
 
@@ -210,7 +211,11 @@ export default class PtListPage extends Component{
                                     if ((isNaN(parseFloat(e.target.value))) ||
                                         (e.target.value.indexOf('.') !== -1 &&
                                         e.target.value.split(".")[1].length > 2)
-                                    ) { this.setState({ priceErr: "Invalid" });}
+                                    ) { this.setState({ priceErr: "Invalid" }); }
+                                    else if (parseFloat(e.target.value) > parseFloat(this.state.itemInfo.price.slice(1))) {
+                                        console.log(this.state.itemInfo.price);;
+                                        this.setState({ priceErr: "Must be less than current price" });
+                                        }
                                      else {
                                         this.setState({priceErr: "",maxPrice: e.target.value});
                                     }
@@ -244,18 +249,21 @@ export default class PtListPage extends Component{
                         </div>
                     }
                 </div>
-                {this.state.hasItems &&
+                {!this.state.iLoad && this.state.hasItems ?
                     <div className="uItems">
-                    <br />
-                    {this.iList.map(item =>
-                        <PriceItem key={this.keyIndex++}
-                            title={item.itemName} price={item.currentPrice}
-                            vendor={item.vendor} maxPrice={item.maxPrice}
-                            url={item.pageUrl}
-                        />
-                    )}
-                    </div>
+                        <br />
+                        {this.iList.map(item =>
+                            <PriceItem key={this.keyIndex++}
+                                title={item.itemName} price={item.currentPrice}
+                                vendor={item.vendor} maxPrice={item.maxPrice}
+                                url={item.pageUrl}
+                            />
+                        )}
+                    </div> :
+                    <h3>You aren't tracking any items yet</h3>
                 }
+                {this.state.iLoad && <div className="CLoad" style={{ marginTop: "10%" }}>
+                    <CircularProgress /></div>}
             </div>
         )
     }

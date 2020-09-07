@@ -60,7 +60,7 @@ export default class UserAuthForm extends Component{
             passErr: this.state.password === "" ? "Required": ""
         });
 
-        if(this.state.email.length === 0 || this.state.password === 0)
+        if(this.state.email.length === 0 || this.state.password.length === 0)
             return false;
 
         var failed = false;
