@@ -249,7 +249,9 @@ export default class PtListPage extends Component{
                         </div>
                     }
                 </div>
-                {!this.state.iLoad && this.state.hasItems ?
+                {!this.state.iLoad &&
+                    <div>
+                    { this.state.hasItems ? 
                     <div className="uItems">
                         <br />
                         {this.iList.map(item =>
@@ -259,8 +261,8 @@ export default class PtListPage extends Component{
                                 url={item.pageUrl}
                             />
                         )}
-                    </div> :
-                    <h3>You aren't tracking any items yet</h3>
+                    </div>:
+                    <h3>You aren't tracking any items yet</h3>}</div>
                 }
                 {this.state.iLoad && <div className="CLoad" style={{ marginTop: "10%" }}>
                     <CircularProgress /></div>}

@@ -33,5 +33,6 @@ msbuild.wrn
 
 # Additional Files
 /appsettings.json
+/MailUtils/MailConfig.cs
 /appsettings.Development.json
-/amz-tracker/README.md
+/price-tracker/README.md
