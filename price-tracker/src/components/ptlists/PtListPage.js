@@ -212,7 +212,7 @@ export default class PtListPage extends Component{
                                         (e.target.value.indexOf('.') !== -1 &&
                                         e.target.value.split(".")[1].length > 2)
                                     ) { this.setState({ priceErr: "Invalid" }); }
-                                    else if (parseFloat(e.target.value) > parseFloat(this.state.itemInfo.price.slice(1))) {
+                                    else if (parseFloat(e.target.value) >= parseFloat(this.state.itemInfo.price.slice(1))) {
                                         console.log(this.state.itemInfo.price);;
                                         this.setState({ priceErr: "Must be less than current price" });
                                         }

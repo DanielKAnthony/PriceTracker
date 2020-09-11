@@ -1,0 +1,25 @@
+.MainContainer{
+    background: url('./mainBanner.jpg') no-repeat center center fixed;
+    text-align: center;
+    justify-content: center;
+    width: 100vw;
+    height: 70vh;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    box-shadow: 1px 5px 15px black;
+}
+.HomeText{
+    text-align: left;
+    position:"absolute";
+    margin-left:2vw;
+}
+#gPic{
+    width:3vw;
+}
+@media(max-aspect-ratio:3/5){
+    #gPic{
+        width:15vw;
+    }
+}
