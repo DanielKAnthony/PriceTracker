@@ -1,6 +1,4 @@
-﻿using System.Web;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -48,6 +46,20 @@ namespace PriceTrackerApp.Controllers
             }
 
             return JsonConvert.SerializeObject(uRecs, Formatting.Indented);
+        }
+
+        [HttpGet("demo")]
+        public async Task<ActionResult<string>> GetDemoPlot()
+        {
+            var demoPoints = await _context.TrackLists
+                .Where(e => e.ListedEmail == "notifier.pricetracker@gmail.com").ToListAsync();
+
+            Dictionary<int, List<PriceRecord>> dRec =
+                new Dictionary<int, List<PriceRecord>>();
+            dRec[34] = _context.ListTrends
+                        .Where(e => e.TrackListId == 34).ToList();
+
+            return JsonConvert.SerializeObject(dRec, Formatting.Indented);
         }
     }
 }

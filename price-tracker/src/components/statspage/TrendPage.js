@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Cookies from 'js-cookie';
 import { CircularProgress } from '@material-ui/core';
 import PriceModel from './PriceModel';
+import DemoPlot from './DemoPlot';
 import axios from 'axios';
 
 export default class TrendPage extends Component{
@@ -66,6 +67,7 @@ export default class TrendPage extends Component{
                             </div>
                         }
                     </div>}
+                <DemoPlot/>
             </div>
         )
     }
