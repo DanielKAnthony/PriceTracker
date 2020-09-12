@@ -2,10 +2,11 @@
     width: 20vw;
     text-overflow: ellipsis;
     background-color: rgba(173, 191, 219,0.25);
+    background-image: linear-gradient(120deg, #fdfbfb 0%, #e6f3fa 100%);
     border-radius: 2%;
     box-shadow: 1px 3px 5px grey;
     min-height: 35vh;
-    margin: 1vh 2vw 1vw 2vh;
+    margin: 1vh 2vw 2vh 2vh;
 }
 
 @media(max-aspect-ratio:1/1), (max-width:850px){
