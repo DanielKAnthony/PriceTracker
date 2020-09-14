@@ -67,6 +67,7 @@ export default class PassChange extends Component{
                 name="oldPass"
                 variant="outlined"
                 placeholder="Password"
+                type="password"
                 onChange={e=>{this.setState({oldPass:e.target.value})}}
                 error={this.state.oldPassErr !== ""}
                 helperText={this.state.oldPassErr}
@@ -76,6 +77,7 @@ export default class PassChange extends Component{
                 name="newPass"
                 variant="outlined"
                 placeholder="New password"
+                type="password"
                 onChange={e=>{this.setState({newPass:e.target.value})}}
                 error={this.state.newPassErr !== ""}
                 helperText={this.state.newPassErr}
@@ -85,6 +87,7 @@ export default class PassChange extends Component{
                 name="conNewPass"
                 variant="outlined"
                 placeholder="Confirm password"
+                type="password"
                 onChange={e=>{this.setState({conNewPass:e.target.value})}}
                 error={this.state.conNewPassErr !== ""}
                 helperText={this.state.conNewPassErr}

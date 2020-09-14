@@ -52,6 +52,7 @@ export default class DeleteAccount extends Component{
                         name="passConfirm"
                         variant="outlined"
                         placeholder="Password"
+                        type="password"
                         onChange={e=>{this.setState({passConfirm:e.target.value})}}
                         error={this.state.passErr !== ""}
                         helperText={this.state.passErr}
