@@ -6,6 +6,7 @@ import PtNavbar from './components/navbar/PtNavbar';
 import PtListPage from './components/ptlists/PtListPage';
 import Profile from './components/profile/Profile';
 import TrendPage from './components/statspage/TrendPage';
+import NotFound from './components/notfound/NotFound';
 import Cookies from 'js-cookie';
 
 export default class App extends Component{
@@ -39,7 +40,8 @@ export default class App extends Component{
           {this.isLoggedIn() ?
           <Route exact path='/analytics' component={TrendPage} /> :
           <Redirect to='/login' component={AuthParent} />
-          }
+                }
+          <Route exact path="" component={NotFound}/>
         </Switch>
       </Router>
     )
