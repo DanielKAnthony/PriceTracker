@@ -35,11 +35,13 @@ namespace PriceTrackerApp.Controllers
                 {
                     string[] info = await PriceScraper.FetchData(item.PageUrl);
                     price = float.Parse(info[1]);
+                    if (item.MaxPrice >= price)
+                        MailSender.MakeEmail(item.ListedEmail, item.ItemName,
+                            info[1], item.PageUrl, item.Vendor);
                 }
                 catch
                 {
-                    RemoveItem("hi");
-                    Console.WriteLine("Fail: " + item.Id);
+                    RemoveItem(item.Id);
                     continue;
                 }
 
@@ -73,11 +75,16 @@ namespace PriceTrackerApp.Controllers
             _context.SaveChanges();
         }
 
-        public void RemoveItem(string temp)
+        public void RemoveItem(int trackId)
         {
-            temp = null;
-            Console.WriteLine("ERROR HERE");
+            _context.ListTrends.RemoveRange(
+                _context.ListTrends.Where(e => e.TrackListId == trackId));
 
+            TrackList tlTemp = _context.TrackLists.Where(e => e.Id == trackId).ToList()[0];
+            tlTemp.Vendor = "Page no longer available";
+
+            _context.Entry(tlTemp).Property(e => e.Vendor).IsModified = true;
+            _context.SaveChanges();
         }
     }
 }

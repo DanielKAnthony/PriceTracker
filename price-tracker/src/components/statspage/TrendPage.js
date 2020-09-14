@@ -33,13 +33,15 @@ export default class TrendPage extends Component{
         }).then(res => {
             if (res !== undefined) {
                 for (let i in res.data) {
-                    this.titles.push(res.data[i][0].ItemName)
-                    let arr = [];
-                    for (let j = 0; j < res.data[i].length; ++j) {
-                        let dayTemp = res.data[i][j].DaysAgo;
-                        arr.push({ name: `${dayTemp}`, uv: res.data[i][j].Price });
-                    }
-                    this.data.push(arr);
+                    try {
+                        this.titles.push(res.data[i][0].ItemName)
+                        let arr = [];
+                        for (let j = 0; j < res.data[i].length; ++j) {
+                            let dayTemp = res.data[i][j].DaysAgo;
+                            arr.push({ name: `${dayTemp}`, uv: res.data[i][j].Price });
+                        }
+                        this.data.push(arr);
+                    } catch{ continue;}
                 }
                 this.setState({ hasData: true, isLoading: false });
             }
