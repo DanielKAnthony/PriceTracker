@@ -41,7 +41,9 @@ namespace PriceTrackerApp.Controllers
                 if (!uRecs.ContainsKey(trendIds[i]))
                 {
                     uRecs[trendIds[i]] = _context.ListTrends
-                        .Where(e => e.TrackListId == trendIds[i]).ToList();
+                        .Where(e => e.TrackListId == trendIds[i])
+                        .OrderBy(e => e.DaysAgo)
+                        .ToList();
                 }
             }
 
