@@ -41,15 +41,6 @@ namespace PriceTrackerApp.Controllers
             url = HttpUtility.UrlDecode(url);
             string[] res = await PriceScraper.FetchData(url);
 
-            Console.WriteLine(res.Length);
-            if (res.Length > 0)
-            {
-                for(int i = 0; i < res.Length; ++i)
-                {
-                    Console.WriteLine(res[i]);
-                }
-            }
-
             return res;
         }
 
