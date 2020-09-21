@@ -3,11 +3,11 @@
 
 This web application is capable of tracking the price of any item found on the official websites of Kijiji, Bestbuy, and Indigo/Chapters. Users can see a graphical representation of their selected items' price trends up to the last 30 days since they added it to their list.
 
-The user can opt in to receive an email notification if one of their tracked items reaches or falls below a specified price.
+The user can choose in to receive an email notification if one of their tracked items reaches or falls below a specified price.
 
-This is done through a server-side web scraper written in C#, using the AngleSharp module installed through NuGet.
+This is done through a server-side web scraper written in C#, using the AngleSharp module installed through NuGet Package Manager.
 
-The site can visited [here](https://pricetrackerweb.herokuapp.com)
+The site can be visited [here](https://pricetrackerweb.herokuapp.com)
 
 ## Technologies Used
 .NET Core 3
@@ -18,7 +18,7 @@ The site can visited [here](https://pricetrackerweb.herokuapp.com)
 .React.js
 - Navbar conditional rendering, textfields, and buffer icon components using MaterialUI.
 
-PostgreSQL
+PostgreSQL DB
 - Hosted on AWS server through ElephantSQL.
 
 Docker version 19.03.1
