@@ -56,15 +56,6 @@ namespace PriceTrackerApp
             }
 
             app.UseRouting();
-
-            /*app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
-            });*/
-
             app.UseForwardedHeaders();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
